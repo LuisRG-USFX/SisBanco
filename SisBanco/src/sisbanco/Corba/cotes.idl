@@ -1,0 +1,10 @@
+module example{ 
+    
+    
+    interface cotes{ 
+        
+        
+        string pedientes(in long idcliente);
+        string pagar(in string facturas);
+    }; 
+};

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import example.Conectar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CotesImpl extends cotesPOA {
@@ -15,17 +16,27 @@ public class CotesImpl extends cotesPOA {
   
     public String pedientes(int idcliente){
         try {
+            String cadena = "";
             idcliente = 1;
             con = new Conectar();
             Connection reg = con.getConnection();
-            PreparedStatement count;
-           /* count = reg.prepareStatement("select count(IdFactura) from facturas where IdCliente = "+Integer.toString(idcliente));
-            count.executeQuery();*/
-            PreparedStatement pstmt;
-            pstmt = reg.prepareStatement("SELECT IdFactura, Monto FROM Facturas where IdCliente "+ "= "+Integer.toString(idcliente));
-            pstmt.executeQuery();
-            
-            return pstmt.toString();
+            String query = "SELECT * FROM Facturas WHERE IdCliente = "+idcliente;
+            PreparedStatement prepStmnt = reg.prepareStatement(query);
+            ResultSet dataset = prepStmnt.executeQuery(); 
+            while(dataset.next()){
+                if(dataset.getString("Estado").equals("Pendiente")){
+                    if(cadena.equals("")){
+                        cadena= cadena+dataset.getString("IdFactura");
+                        cadena= cadena+"-"+dataset.getString("Monto")+",";
+                    }
+                    else{
+                        cadena= cadena+"-"+dataset.getString("IdFactura");
+                        cadena= cadena+"-"+dataset.getString("Monto")+",";
+                    }
+                }
+            }
+            cadena = cadena.substring(0, cadena.length()-1);
+            return cadena;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

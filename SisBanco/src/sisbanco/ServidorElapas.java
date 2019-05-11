@@ -6,10 +6,33 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ServidorElapas {
+    private static String getFacturas(int id) throws SQLException, ClassNotFoundException{
+        ResultSet result;
+        String facts="";
+        PostgreSQL pg = new PostgreSQL();
+        pg.conectar();
+        pg.consultar(id);
+        result= pg.getResultado();
+        while(result.next()){
+            if(facts.equals("")){
+                facts=facts+result.getInt("id_factura")+"-"+result.getInt("monto");
+            }
+            else{
+            facts=facts+","+result.getInt("id_factura")+"-"+result.getInt("monto");
+            }
+        }
+        pg.cerrar();
+        return facts;
+    }
     
-    public static void main(String[] args) {
+    
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         int port = 5001; // puerto en el que escuchara el socket
         String Respuesta="";
         try 
@@ -31,19 +54,12 @@ public class ServidorElapas {
                     
                     if (comando.equals("fac")) {
                         Integer idcliente  = Integer.parseInt(cadena.substring(4));
-                        if (idcliente==1)
-                        {
-                            Respuesta="2256-36,3216-26,4547-44";
-                        }
-                        if (idcliente==2)
-                        {
-                            Respuesta="1354-25,3252-17";
-                        }
+                        Respuesta=getFacturas(idcliente);
                         }
                     if (comando.equals("pag")) {
                             Respuesta="SI";
                     }
-                    
+                    System.out.print(Respuesta);
                     toClient.flush();
                     toClient.println(Respuesta);
                 } else {

@@ -16,7 +16,7 @@ public class Factura  implements Serializable {
     private String Empresa;
     private int IdFactura;
     private Double Monto;
-
+    
     public String getEmpresa() {
         return Empresa;
     }

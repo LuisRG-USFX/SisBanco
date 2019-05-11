@@ -6,27 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ServidorElapas {
     private static String getFacturas(int id) throws SQLException, ClassNotFoundException{
-        ResultSet result;
-        String facts="";
+        String facts;
         PostgreSQL pg = new PostgreSQL();
         pg.conectar();
-        pg.consultar(id);
-        result= pg.getResultado();
-        while(result.next()){
-            if(facts.equals("")){
-                facts=facts+result.getInt("id_factura")+"-"+result.getInt("monto");
-            }
-            else{
-            facts=facts+","+result.getInt("id_factura")+"-"+result.getInt("monto");
-            }
-        }
+        facts=pg.consultar(id);
         pg.cerrar();
         return facts;
     }

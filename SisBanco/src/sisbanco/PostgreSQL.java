@@ -14,11 +14,21 @@ public class PostgreSQL {
         con= DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbElapas","postgres","9874563210");
     }
     
-    public void consultar(int id)throws SQLException, ClassNotFoundException{
+    public String consultar(int id)throws SQLException, ClassNotFoundException{
+        String facts="";
         String consulta= "SELECT * FROM facturas WHERE id_cliente="+id+";";
         conectar();
         st=con.createStatement();
         resultado=st.executeQuery(consulta);
+         while(resultado.next()){
+            if(facts.equals("")){
+                facts=facts+resultado.getInt("id_factura")+"-"+resultado.getInt("monto");
+            }
+            else{
+            facts=facts+","+resultado.getInt("id_factura")+"-"+resultado.getInt("monto");
+            }
+        }
+         return facts;
     }
     
     public void cerrar() throws SQLException, ClassNotFoundException{

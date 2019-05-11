@@ -32,7 +32,7 @@ public class MongoDB {
         while(cursor.hasNext()){
             String aux=cursor.next().toString();
             datos=aux.split(",");
-            System.out.println("Datos: "+aux);
+            //System.out.println("Datos: "+aux);
             String[] partIdFac= datos[0].split(":");
             String[] partMonto= datos[2].split(":");
             int id_factura=Integer.valueOf(partIdFac[1].replaceAll("\\D", ""));

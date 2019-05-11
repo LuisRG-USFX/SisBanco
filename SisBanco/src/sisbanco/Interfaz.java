@@ -12,7 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
+/**
+ *
+ * @author Alberth
+ */
 public class Interfaz extends javax.swing.JFrame {
 
     /**
@@ -45,6 +48,7 @@ public class Interfaz extends javax.swing.JFrame {
         txtId = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jbtnPagar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +64,8 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel2.setText("ID");
 
+        jTable1.setBackground(new java.awt.Color(153, 255, 153));
+        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -68,12 +74,21 @@ public class Interfaz extends javax.swing.JFrame {
                 "ID", "ID FACTURA", "MONTO"
             }
         ));
+        jTable1.setEditingColumn(0);
+        jTable1.setEditingRow(0);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
+
+        jbtnPagar.setText("Pagar");
+        jbtnPagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnPagarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,7 +104,9 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addComponent(BotonBuscar))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jbtnPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(BotonBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(jLabel1)))
@@ -102,7 +119,7 @@ public class Interfaz extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -110,8 +127,10 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
-                        .addComponent(BotonBuscar)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addComponent(BotonBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnPagar)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         BotonBuscar.getAccessibleContext().setAccessibleName("botonB");
@@ -155,8 +174,8 @@ public class Interfaz extends javax.swing.JFrame {
         for (int i = 0; i < lista.size(); i++) {
             
             matris[i][0]=lista.get(i).getEmpresa();
-            matris[i][1]=lista.get(i).getEmpresa();
-            matris[i][2]=lista.get(i).getEmpresa();
+            matris[i][1]="" +lista.get(i).getIdFactura();
+            matris[i][2]=""+lista.get(i).getMonto();
             
         }
         
@@ -171,6 +190,16 @@ public class Interfaz extends javax.swing.JFrame {
         int posicion=jTable1.rowAtPoint(evt.getPoint());
         
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jbtnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnPagarActionPerformed
+        try{
+            consultar=(IOperacionesEmpresa)Naming.lookup("rmi://localhost/Operaciones");
+            //JOptionPane.showMessageDialog(null, ""+consultar.pagar());
+            String[] fila= new String[3];
+            //fila[0]=jTable1;
+        }
+        catch(Exception e){}
+    }//GEN-LAST:event_jbtnPagarActionPerformed
 
     
     
@@ -235,6 +264,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnPagar;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
